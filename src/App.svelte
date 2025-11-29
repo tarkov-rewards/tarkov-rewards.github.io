@@ -98,6 +98,28 @@
 		}
 		if (orphan) console.error(`Orphan unlock: ${unlock.name}`);
 	}
+	const sortOptions = ['Name', 'Trader', 'Level'];
+	let sort = $state('Name');
+	let sortKey = $state('asd'); // Yikes but this is neccessary
+
+	$effect(() => console.log('sort changed:', sort));
+
+	$effect(() => {
+		console.log(`Sorting by ${sort}`);
+		unlockGroups.forEach((g) =>
+			g.unlocks.sort((a, b) => {
+				if (sort === 'Name') {
+					return a.name.localeCompare(b.name);
+				} else if (sort === 'Trader') {
+					return a.trader.localeCompare(b.trader);
+				} else if (sort === 'Level') {
+					return a.quest.lvl - b.quest.lvl;
+				}
+				return 0;
+			})
+		);
+		sortKey = `${sort}-${Math.random()}`;
+	});
 
 	let expanded = $state('');
 
@@ -105,18 +127,29 @@
 </script>
 
 <main>
-	{#each unlockGroups as { name, unlocks }}
-		<div class="not-first:mt-8 text-lg font-semibold">{name}</div>
-		{#each Object.values(unlocks) as unlock}
-			<Unlock
-				name={unlock.name}
-				trader={unlock.trader}
-				quest={unlock.quest}
-				wiki={unlock.wiki}
-				icon={unlock.icon}
-				expanded={unlock.name === expanded}
-				expand={() => (expanded = unlock.name === expanded ? '' : unlock.name)}
-			/>
+	<div>
+		<span class="font-semibold">Sort: </span>
+		<select bind:value={sort} class="mb-4">
+			{#each sortOptions as option}
+				<option value={option}>{option}</option>
+			{/each}
+		</select>
+	</div>
+
+	{#key sortKey}
+		{#each unlockGroups as { name, unlocks }}
+			<div class="not-first:mt-8 text-lg font-semibold">{name}</div>
+			{#each Object.values(unlocks) as unlock}
+				<Unlock
+					name={unlock.name}
+					trader={unlock.trader}
+					quest={unlock.quest}
+					wiki={unlock.wiki}
+					icon={unlock.icon}
+					expanded={unlock.name === expanded}
+					expand={() => (expanded = unlock.name === expanded ? '' : unlock.name)}
+				/>
+			{/each}
 		{/each}
-	{/each}
+	{/key}
 </main>

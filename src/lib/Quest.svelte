@@ -12,6 +12,10 @@
 		onclick={(e) => e.stopPropagation()}
 		class="hover:underline cursor-pointer">{quest.name}</a
 	>
+
+	<span>
+		(lv. {quest.lvl})
+	</span>
 	<!-- <p>Trader: {quest.trader}</p> -->
 	{#each quest.prerequisites as prerequisite}
 		<Quest quest={prerequisite} indent={indent + 1} />

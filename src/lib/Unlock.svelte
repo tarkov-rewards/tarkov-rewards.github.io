@@ -48,6 +48,9 @@
 		<span class="font-semibold group-hover:underline w-30 text-nowrap">
 			{trader}
 		</span>
+		<span class="w-18 text-nowrap font-semibold group-hover:underline">
+			(lv. {quest.lvl})
+		</span>
 		<span class="font-semibold group-hover:underline">
 			{name}
 		</span>
