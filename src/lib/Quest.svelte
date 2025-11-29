@@ -1,0 +1,19 @@
+<script lang="ts">
+	import type { Quest as QuestT } from './types';
+	import Quest from './Quest.svelte';
+
+	export const { quest, indent = 0 }: { quest: QuestT; indent: number } = $props();
+</script>
+
+<div class="ml-2">
+	<a
+		href={quest.wiki}
+		target="_blank"
+		onclick={(e) => e.stopPropagation()}
+		class="hover:underline cursor-pointer">{quest.name}</a
+	>
+	<!-- <p>Trader: {quest.trader}</p> -->
+	{#each quest.prerequisites as prerequisite}
+		<Quest quest={prerequisite} indent={indent + 1} />
+	{/each}
+</div>
